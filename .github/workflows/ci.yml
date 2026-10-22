@@ -1,0 +1,35 @@
+name: Continuous Integration
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'openjdk'
+
+      - name: Make Gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Run Static Code Analysis (Linter)
+        run: ./gradlew checkstyleMain checkstyleTest
+
+      - name: Build Docker Image
+        run: |
+          docker build -t healthcheck-app:latest .
+
+      - name: Validate Docker Compose Configuration
+        run: |
+          docker compose config
