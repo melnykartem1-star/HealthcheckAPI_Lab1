@@ -37,6 +37,8 @@ curl -X GET http://localhost:8080/healthz/live
 curl -X GET http://localhost:8080/healthz/ready
 ```
 
+> Примітка для Windows PowerShell: Якщо команда curl не розпізнається або видає помилку, використовуйте curl.exe.
+
 ---
 
 **4. Зупинка контейнера**
